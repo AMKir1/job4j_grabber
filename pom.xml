@@ -4,7 +4,7 @@
     <artifactId>grabber</artifactId>
     <packaging>pom</packaging>
     <version>3.0</version>
-    <name>junior</name>
+    <name>grabber</name>
     <url>http://job4j.ru/</url>
 
     <properties>
@@ -19,6 +19,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
 
