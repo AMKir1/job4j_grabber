@@ -3,14 +3,29 @@ package ru.job4j.html;
 import java.util.Date;
 
 public class Post {
+    private long id;
     private String link;
     private String name;
     private Date date;
+    private String details;
 
-    Post( String link, String name, Date date){
+    Post(long id, String link, String name, Date date, String details){
+        this.id = id;
         this.link = link;
         this.name = name;
         this.date = date;
+        this.details = details;
+    }
+
+    Post( String link, String name, Date date, String details){
+        this.link = link;
+        this.name = name;
+        this.date = date;
+        this.details = details;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getLink() {
@@ -35,6 +50,14 @@ public class Post {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     @Override

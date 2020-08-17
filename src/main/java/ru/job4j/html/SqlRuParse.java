@@ -5,25 +5,28 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 5; i++) {
             Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%d", i)).get();
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
-                Element href = td.child(0);
-                System.out.println(href.attr("href"));
-                System.out.println(href.text());
-                System.out.println(getDate(href.parent().parent().child(5).text()));
+                if (td.childNodeSize() < 6) { // пропускаем закрытые топики
+                    System.out.println(td.child(0).attr("href"));
+                    System.out.println(td.child(0).text());
+                    getDate(td.child(0).parent().parent().child(5).text());
+                    getDetails(td.child(0).attr("href"));
+                }
             }
         }
     }
 
-    public static Date getDate(String dateString) {
+    public static void getDate(String dateString) {
         Calendar c = new GregorianCalendar();
         String[] monthes = {"янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
         String[] dateMass = dateString.replace(",", "").split(" ");
@@ -48,6 +51,12 @@ public class SqlRuParse {
                     Integer.parseInt(dateMass[3].split(":")[1])
             );
         }
-        return c.getTime();
+        System.out.println(c.getTime());
+    }
+
+    public static void getDetails(String link) throws IOException {
+        Element e = Jsoup.connect(link).get().select(".msgBody").get(1);
+        System.out.println(e.text());
+        System.out.println(e.parent().parent().select(".msgFooter").text().substring(0, 16));
     }
 }
