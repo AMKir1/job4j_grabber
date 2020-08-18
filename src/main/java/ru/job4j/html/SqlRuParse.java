@@ -4,20 +4,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
-import java.lang.annotation.ElementType;
 import java.util.*;
 
 public class SqlRuParse implements Parse {
 
-    private List<Post> posts;
-    private int pages = 5;
+    private static final int pages = 5;
 
     SqlRuParse () { }
-
-    public static void main(String[] args) {
-    }
 
     public static Date getDate(String dateString) {
         Calendar c = new GregorianCalendar();
@@ -49,17 +43,14 @@ public class SqlRuParse implements Parse {
 
     public static String getDetails(String link) throws IOException {
         Element e = Jsoup.connect(link).get().select(".msgBody").get(1);
-        StringBuilder sb = new StringBuilder();
-        sb.append(e.text());
-        sb.append(e.parent().parent().select(".msgFooter").text().substring(0, 16));
-        return sb.toString();
+        return e.text() + e.parent().parent().select(".msgFooter").text().substring(0, 16);
     }
 
     @Override
     public List<Post> list(String link) {
         List<Post> list = new ArrayList<>();
         try {
-            for (int i = 1; i < this.pages; i++) {
+            for (int i = 1; i < pages; i++) {
                 Document doc = Jsoup.connect(String.format("%s/%d", link, i)).get();
                 Elements row = doc.select(".postslisttopic");
                 for (Element td : row) {

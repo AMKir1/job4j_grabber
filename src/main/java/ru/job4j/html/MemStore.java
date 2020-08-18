@@ -1,5 +1,6 @@
 package ru.job4j.html;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class MemStore implements Store {
@@ -22,5 +23,15 @@ public class MemStore implements Store {
     @Override
     public List<Post> getAll() {
         return this.posts;
+    }
+
+    @Override
+    public Post findById(String id) {
+        for (Post p : this.posts) {
+            if(p.getId() == Integer.parseInt(id)) {
+                return p;
+            }
+        }
+        return null;
     }
 }

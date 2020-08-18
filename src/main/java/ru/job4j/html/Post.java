@@ -63,9 +63,11 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "link='" + link + '\'' +
+                "id=" + id +
+                ", link='" + link + '\'' +
                 ", name='" + name + '\'' +
                 ", date=" + date +
+                ", details='" + details + '\'' +
                 '}';
     }
 }
