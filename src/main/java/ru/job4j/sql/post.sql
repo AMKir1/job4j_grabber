@@ -4,5 +4,5 @@ CREATE TABLE post (
     text    varchar(10000),
     link    varchar(2000),
     created timestamp,
-    CONSTRAINT post_unique UNIQUE (name)
+    CONSTRAINT post_unique UNIQUE (link)
 )
