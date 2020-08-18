@@ -4,6 +4,8 @@ public class StartParse {
     public static void main(String[] args) throws Exception {
         Grabber grab = new Grabber();
         grab.cfg();
-        grab.init(new SqlRuParse(), grab.store(), grab.scheduler());
+        Store store = grab.store();
+        grab.init(new SqlRuParse(), store, grab.scheduler());
+        grab.web(store);
     }
 }
