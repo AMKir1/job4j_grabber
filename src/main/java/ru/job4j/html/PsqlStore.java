@@ -32,7 +32,7 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public void save(Post post) {
-        try (PreparedStatement ps =  ConnectionRollback.create(this.cnn).prepareStatement(SQL_ADD_POST, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps =  ConnectionRollback.create(this.cnn).prepareStatement(SQL_ADD_POST)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDetails());
             ps.setString(3, post.getLink());
