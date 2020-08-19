@@ -32,11 +32,11 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public void save(Post post) {
-        try (PreparedStatement ps = this.cnn.prepareStatement(SQL_ADD_POST, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps =  ConnectionRollback.create(this.cnn).prepareStatement(SQL_ADD_POST, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDetails());
             ps.setString(3, post.getLink());
-            ps.setTimestamp(4,  new java.sql.Timestamp(post.getDate().getTime()));
+            ps.setTimestamp(4, new java.sql.Timestamp(post.getDate().getTime()));
             ps.executeUpdate();
             ps.getGeneratedKeys();
         } catch (SQLException e) {
@@ -47,7 +47,7 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
-        try (PreparedStatement ps = this.cnn.prepareStatement(SQL_GET_ALL_POSTS)) {
+        try (PreparedStatement ps = ConnectionRollback.create(this.cnn).prepareStatement(SQL_GET_ALL_POSTS)) {
            try(ResultSet rs = ps.executeQuery()){
                while(rs.next()){
                    posts.add(new Post(
@@ -68,7 +68,7 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public Post findById(String id) {
         Post post = null;
-        try (PreparedStatement ps = this.cnn.prepareStatement(SQL_GET_POST_BY_ID)) {
+        try (PreparedStatement ps = ConnectionRollback.create(this.cnn).prepareStatement(SQL_GET_POST_BY_ID)) {
             ps.setLong(1, Long.parseLong(id));
             try(ResultSet rs = ps.executeQuery()){
                 while(rs.next()){
