@@ -24,15 +24,4 @@ public class SqlRuParseTest {
         String result = "Network Traffic Reverser (удалённая вакансия от $3000 до $5000)";
         assertThat(post.getName(), is(result));
     }
-
-    @Test
-    public void savePost() throws IOException {
-        Post post = new Post("test_link1", "DBA junior/middle Oracle и Postgresql", Timestamp.valueOf("2020-08-19 00:30:18.241"), "test_details1");
-        Grabber grab = new Grabber();
-        grab.cfg();
-        PsqlStore store = (PsqlStore) grab.store();
-        store.save(post);
-        Post result = store.findById("170");
-        assertThat(result.getName(), is(post.getName()));
-    }
 }
