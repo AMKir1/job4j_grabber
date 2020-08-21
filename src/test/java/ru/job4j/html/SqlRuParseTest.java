@@ -1,12 +1,10 @@
 package ru.job4j.html;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -37,5 +35,4 @@ public class SqlRuParseTest {
         Post result = store.findById("170");
         assertThat(result.getName(), is(post.getName()));
     }
-
 }
