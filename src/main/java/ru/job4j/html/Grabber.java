@@ -6,6 +6,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.Properties;
 
 import static org.quartz.JobBuilder.newJob;
@@ -33,7 +34,7 @@ public class Grabber implements Grab {
     }
 
     @Override
-    public void init(Parse parse, Store store, Scheduler scheduler) {
+    public void init(List<Parse> parse, Store store, Scheduler scheduler) {
         try {
             JobDataMap data = new JobDataMap();
             data.put("store", store);
@@ -61,8 +62,9 @@ public class Grabber implements Grab {
         public void execute(JobExecutionContext context) {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (PsqlStore) map.get("store");
-            Parse parse = (SqlRuParse) map.get("parse");
-            parse.list("https://www.sql.ru/forum/job-offers/").forEach(store::save);
+            List<Parse> parses = (List<Parse>) map.get("parse");
+            parses.get(0).list("https://www.sql.ru/forum/job-offers/").forEach(store::save);
+            parses.get(1).list("https://hh.ru/search/vacancy?order_by=publication_time&clusters=true&area=1&text=Java&enable_snippets=true&search_period=7").forEach(store::save);
         }
     }
 

@@ -8,20 +8,23 @@ public class Post {
     private String name;
     private Date date;
     private String details;
+    private Long type;
 
-    Post(long id, String link, String name, Date date, String details){
+    Post(long id, String link, String name, Date date, String details, Long type){
         this.id = id;
         this.link = link;
         this.name = name;
         this.date = date;
         this.details = details;
+        this.type = type;
     }
 
-    Post( String link, String name, Date date, String details){
+    Post(String link, String name, Date date, String details, Long type){
         this.link = link;
         this.name = name;
         this.date = date;
         this.details = details;
+        this.type = type;
     }
 
     public long getId() {
@@ -60,6 +63,14 @@ public class Post {
         this.details = details;
     }
 
+    public Long getType() {
+        return type;
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -68,6 +79,7 @@ public class Post {
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", details='" + details + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

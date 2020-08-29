@@ -37,6 +37,7 @@ public class PsqlStore implements Store, AutoCloseable {
             ps.setString(2, post.getDetails());
             ps.setString(3, post.getLink());
             ps.setTimestamp(4, new java.sql.Timestamp(post.getDate().getTime()));
+            ps.setLong(5, post.getType());
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("DB error: " + e);
@@ -47,17 +48,18 @@ public class PsqlStore implements Store, AutoCloseable {
     public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
         try (PreparedStatement ps = ConnectionRollback.create(this.cnn).prepareStatement(SQL_GET_ALL_POSTS)) {
-           try(ResultSet rs = ps.executeQuery()){
-               while(rs.next()){
-                   posts.add(new Post(
-                           rs.getLong("id"),
-                           rs.getString("link"),
-                           rs.getString("name"),
-                           rs.getDate("created"),
-                           rs.getString("text")
-                           ));
-               }
-           }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(new Post(
+                            rs.getLong("id"),
+                            rs.getString("link"),
+                            rs.getString("name"),
+                            rs.getDate("created"),
+                            rs.getString("text"),
+                            rs.getLong("type_id")
+                    ));
+                }
+            }
         } catch (SQLException e) {
             System.out.println("DB error: " + e);
         }
@@ -69,14 +71,15 @@ public class PsqlStore implements Store, AutoCloseable {
         Post post = null;
         try (PreparedStatement ps = ConnectionRollback.create(this.cnn).prepareStatement(SQL_GET_POST_BY_ID)) {
             ps.setLong(1, Long.parseLong(id));
-            try(ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
-                   post = new Post(
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    post = new Post(
                             rs.getLong("id"),
                             rs.getString("link"),
                             rs.getString("name"),
                             rs.getDate("created"),
-                            rs.getString("text")
+                            rs.getString("text"),
+                            rs.getLong("type_id")
                     );
                 }
             }

@@ -55,7 +55,7 @@ public class SqlRuParse implements Parse {
                 Elements row = doc.select(".postslisttopic");
                 for (Element td : row) {
                     if (td.childNodeSize() < 6) { // пропускаем закрытые топики
-                        list.add(new Post(td.child(0).attr("href"), td.child(0).text(), getDate(td.child(0).parent().parent().child(5).text()), getDetails(td.child(0).attr("href"))));
+                        list.add(new Post(td.child(0).attr("href"), td.child(0).text(), getDate(td.child(0).parent().parent().child(5).text()), getDetails(td.child(0).attr("href")), 2L));
                     }
                 }
             }
@@ -74,8 +74,9 @@ public class SqlRuParse implements Parse {
                     link,
                     name.substring(0, name.length() - 6),
                     getDate(Jsoup.connect(link).get().select(".msgBody").get(1).parent().parent().select(".msgFooter").text().substring(0, 16)),
-                    getDetails(link)
-                    );
+                    getDetails(link),
+                    2L
+            );
         } catch (Exception e) {
             e.fillInStackTrace();
         }
